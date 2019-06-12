@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"/>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Object Detector</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+</head>
+
+<body class="w3-theme-14" onload="runDemo()">
+    <div style="min-width:400px">
+        <div class="w3-bar w3-large w3-theme-d4">
+            <span class="w3-bar-item">Object Detector</span>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Randomly Selected Demo Image</b></p>
+            <div class="w3-panel w3-white w3-card w3-display-container"
+                 style="overflow: hidden">
+                <div style="float: left;">
+                    <img id="image" width="600"/>
+                </div>
+                <div id="objects" style="float: right;">
+                    <h5>Objects Detected:</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>

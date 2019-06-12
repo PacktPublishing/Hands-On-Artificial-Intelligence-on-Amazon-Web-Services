@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"/>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Universal Translator</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="w3-theme-14">
+    <div style="min-width:400px">
+        <div class="w3-bar w3-large w3-theme-d4">
+            <span class="w3-bar-item">Universal Translator</span>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Select Languages</b></p>
+            <div class="w3-panel w3-white w3-card w3-display-container w3-center">
+                <div>
+                    <b class="w3-opacity">From:</b>
+                    <select id="fromLang">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                    </select>
+                    <hr>
+                    <b class="w3-opacity">To:</b>
+                    <select id="toLang">
+                        <option value="de">German</option>
+                        <option value="fr">French</option>
+                        <option value="it">Italian</option>
+                        <option value="es">Spanish</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Record Audio</b></p>
+            <div class="w3-panel w3-white w3-card w3-display-container w3-center">
+                <div>
+                    <audio id="recording-player" controls>
+                        Your browser does not support the audio element...
+                    </audio>
+                </div>
+                <div>
+                    <input type="button" id="record-toggle" value="Record" onclick="toggleRecording()"/>
+                    <input type="button" id="translate" value="Translate" onclick="uploadAndTranslate()" disabled/>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Translation Text</b></p>
+            <div class="w3-panel w3-white w3-card w3-display-container w3-center">
+                <p id="text-spinner" hidden><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
+                <p class="w3-opacity"><b>Transcription:</b></p>
+                <div id="transcription"></div>
+                <hr>
+                <p class="w3-opacity"><b>Translation:</b></p>
+                <div id="translation"></div>
+            </div>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Translation Audio</b></p>
+            <div class="w3-panel w3-white w3-card w3-display-container w3-center">
+                <p id="audio-spinner" hidden><i class="fa fa-spinner w3-spin" style="font-size:64px"></i></p>
+                <audio id="translation-player" controls>
+                    Your browser does not support the audio element...
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+    <script src="https://github.com/streamproc/MediaStreamRecorder/releases/download/1.3.4/MediaStreamRecorder.js"></script>
+</body>
+
+</html>

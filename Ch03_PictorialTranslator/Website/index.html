@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"/>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Pictorial Translator</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+</head>
+
+<body class="w3-theme-14" onload="testServer()">
+    <div style="min-width:400px">
+        <div class="w3-bar w3-large w3-theme-d4">
+            <span class="w3-bar-item">Pictorial Translator</span>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Upload</b></p>
+            <input id="file" type="file" name="file" accept="image/*"/>
+            <input class="w3-button w3-blue-grey" type="submit" value="Upload"
+                   onclick="uploadAndTranslate()"/>
+
+            <p class="w3-opacity"><b>Image</b></p>
+            <div id="view" class="w3-panel w3-white w3-card w3-display-container"
+                 style="display:none;">
+                <div style="float: left;">
+                    <img id="image" width="600"/>
+                </div>
+                <div style="float: right;">
+                    <h5>Translated Text:</h5>
+                    <div id="translations"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>

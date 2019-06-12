@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"/>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Contact Organizer</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+</head>
+
+<body class="w3-theme-14" onload="retrieveAndDisplayContacts()">
+    <div style="min-width:400px">
+        <div class="w3-bar w3-large w3-theme-d4">
+            <span class="w3-bar-item">Contact Organizer</span>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p class="w3-opacity"><b>Add Contact</b></p>
+            <div class="w3-panel w3-white w3-card w3-display-container w3-center">
+                <div>
+                    <input id="file" type="file" name="file" accept="image/*"/>
+                    <input class="w3-button w3-blue-grey" type="submit"
+                           value="Extract Info" onclick="uploadAndExtract()"/>
+                    <hr>
+                </div>
+                <div id="view" style="display: none;">
+                    <img id="image" width="400"/>
+                    <hr>
+                </div>
+                <div class="w3-display-container w3-left" style="width:45%">
+                    <fieldset>
+                        <legend>Information</legend>
+                        <p>
+                            <label for="name">Name</label>
+                            <input id="name" type="text" name="name"/>
+                        </p>
+                        <p>
+                            <label for="title">Title</label>
+                            <input id="title" type="text" name="title"/>
+                        </p>
+                        <p>
+                            <label for="email">Email</label>
+                            <input id="email" type="email" name="email"/>
+                        </p>
+                        <p>
+                            <label for="phone">Phone</label>
+                            <input id="phone" type="tel" name="phone"/>
+                        </p>
+                    </fieldset>
+                </div>
+                <div class="w3-display-container w3-right" style="width:50%">
+                    <fieldset>
+                        <legend>Address</legend>
+                        <p>
+                            <label for="organization">Organization</label>
+                            <input id="organization" type="text" name="organization"/>
+                        </p>
+                        <p>
+                            <label for="address">Address</label>
+                            <input id="address" type="text" name="address" size="30"/>
+                        </p>
+                        <p>
+                            <label for="city">City</label>
+                            <input id="city" type="text" name="city"/>
+                        </p>
+                        <p>
+                            <label for="state">State</label>
+                            <input id="state" type="text" name="state" size="3"/>
+                            <label for="zip">Zip</label>
+                            <input id="zip" type="text" name="zip" size="6"/>
+                        </p>
+                    </fieldset>
+                    <br>
+                    <input class="w3-button w3-blue-grey" type="submit" id="save"
+                           value="Save Contact" onclick="saveContact()" disabled/>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-container w3-content">
+            <p>
+                <b class="w3-opacity">My Contacts</b>
+                <input class="w3-button w3-blue-grey" type="submit"
+                       value="Refresh" onclick="retrieveAndDisplayContacts()"/>
+            </p>
+            <div class="w3-panel w3-white w3-card w3-display-container w3-center">
+                <div id="contacts"/>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+
+</html>
