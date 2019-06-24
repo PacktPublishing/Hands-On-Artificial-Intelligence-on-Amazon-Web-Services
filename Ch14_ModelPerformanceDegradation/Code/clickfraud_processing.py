@@ -7,6 +7,7 @@ import joblib
 import xgboost as xgbst
 import datetime as dt
 import matplotlib.pyplot as plt
+from itertools import cycle, islice
 
 def upload_to_s3(bucket, channel, file):
     """
@@ -93,12 +94,15 @@ def plot_ftr_imp(model_file):
 def plot_clickcnt_ftr(df_ckFraud, ftr, exp_num):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
-    df_ckFraud.groupby(ftr)['day'].count().sort_values(ascending=False).head(10).plot(kind='bar', ax=ax1)
+    #my_colors = list(islice(cycle(['b', 'g', 'r', 'c', 'm', 'y', 'k']), None, 10))
+    my_colors = list(islice(cycle(['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7']), None, 10))
+    
+    df_ckFraud.groupby(ftr)['day'].count().sort_values(ascending=False).head(10).plot(kind='bar', ax=ax1, color=my_colors)
     ax1.set_xlabel(ftr)
     ax1.set_ylabel("Number of Clicks")
     ax1.set_title("Experiment #{}: Number of Clicks by {}".format(exp_num, ftr))
 
-    df_ckFraud[df_ckFraud['is_attributed'] == 1].groupby(ftr)['day'].count().sort_values(ascending=False).head(10).plot(kind='bar', ax=ax2)
+    df_ckFraud[df_ckFraud['is_downloaded'] == 1].groupby(ftr)['day'].count().sort_values(ascending=False).head(10).plot(kind='bar', ax=ax2, color=my_colors)
     ax2.set_xlabel(ftr)
     ax2.set_ylabel("Number of Clicks")
     ax2.set_title(("Experiment #{}: Number of Clicks by {} when apps are downloaded").format(exp_num, ftr))
