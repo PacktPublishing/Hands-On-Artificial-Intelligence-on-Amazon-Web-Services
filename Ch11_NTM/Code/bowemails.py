@@ -7,7 +7,7 @@ import os
 import boto3
 import sagemaker
 import io
-import sagemaker.amazon.common as smac
+import sagemaker.amazon.common as smamzc
 
 
 # Create dataframe containing ordered list of words in vocabulary
@@ -69,22 +69,22 @@ def TF_IDF(bag_of_words):
     return(new_BOW)
 
 # Partition NTM compatible dataset for training
-def split_convert_upload(sparray, bucket, prefix, fname_template='data_part{}.pbr', n_parts=2):
+def convert_to_pbr(sprse_matrix, bucket, prefix, fname_template='emails_part{}.pbr', num_parts=2):
 
-    chunk_size = sparray.shape[0] // n_parts
-    for i in range(n_parts):
+    partition_size = sprse_matrix.shape[0] // num_parts
+    for i in range(num_parts):
         # Calculate start and end indices
-        start = i*chunk_size
-        end = (i+1)*chunk_size
-        if i+1 == n_parts:
-            end = sparray.shape[0]
+        begin = i*partition_size
+        finish = (i+1)*partition_size
+        if i+1 == num_parts:
+            finish = sprse_matrix.shape[0]
 
         # Convert sparse matrix to sparse tensor (record io protobuf) - a format required by NTM algorithm
         # pbr - Amazon Record Protobuf format
-        buf = io.BytesIO()
-        smac.write_spmatrix_to_sparse_tensor(array=sparray[start:end], file=buf, labels=None)
-        buf.seek(0)
+        data_bytes = io.BytesIO()
+        smamzc.write_spmatrix_to_sparse_tensor(array=sprse_matrix[begin:finish], file=data_bytes, labels=None)
+        data_bytes.seek(0)
 
         # Upload to s3 location specified by bucket and prefix
-        fname = os.path.join(prefix, fname_template.format(i))
-        boto3.resource('s3').Bucket(bucket).Object(fname).upload_fileobj(buf)
+        file_name = os.path.join(prefix, fname_template.format(i))
+        boto3.resource('s3').Bucket(bucket).Object(file_name).upload_fileobj(data_bytes)

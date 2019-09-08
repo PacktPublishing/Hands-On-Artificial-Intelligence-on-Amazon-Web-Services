@@ -26,10 +26,10 @@ def load_df_data(df, verbose=True):
     unique_items = set()
     
     for idx, row in df.iterrows():
-        to_data_list.append({'in0':[int(row['user_ind'])], 'in1':[int(row['book_ind'])], 'label':float(row['BookRating'])})
+        to_data_list.append({'in0':[int(row['user_ind'])], 'in1':[int(row['book_ind'])], 'label':float(row['rating'])})
         users.append(row['user_ind'])
         items.append(row['book_ind'])
-        ratings.append(float(row['BookRating']))
+        ratings.append(float(row['rating']))
         unique_users.add(row['user_ind'])
         unique_items.add(row['book_ind'])
    

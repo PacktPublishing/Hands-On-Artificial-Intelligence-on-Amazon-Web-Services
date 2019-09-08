@@ -21,21 +21,6 @@ channel_name = 'train'
 training_path <- paste(input_path, channel_name, sep='/')
 
 
-# Read the user book ratings 
-training_files = list.files(path=training_path, full.names=TRUE, pattern='*.csv')
-training_test_data = do.call(rbind, lapply(training_files, read.csv))
-
-# Create book ratings matrix
-ratings_mat = dcast(training_test_data, user_ind~book_ind, value.var = "BookRating", fun.aggregate=mean)
-
-# Remove user_ind column
-ratings_mat = as.matrix(ratings_mat[,-1])
-
-# Reduce the size of the matrix (create a dense matrix)
-ratings_mat = as(ratings_mat, "realRatingMatrix")
-
-
-
 # Define training function
 train <- function() {
   
@@ -60,20 +45,31 @@ train <- function() {
   else {
     n_users <- 190 }
   
+  # Read the user book ratings 
+  training_files = list.files(path=training_path, full.names=TRUE, pattern='*.csv')
+  training_test_data = do.call(rbind, lapply(training_files, read.csv))
+
+  # Create book ratings matrix
+  ratings_mat = dcast(training_test_data, user_ind~book_ind, value.var = "rating", fun.aggregate=mean)
+
+  # Remove user_ind column
+  ratings_mat = as.matrix(ratings_mat[,-1])
+
+  # Reduce the size of the matrix (create a dense matrix)
+  ratings_mat = as(ratings_mat, "realRatingMatrix")  
+    
+  print(paste("Ratings Matrix size: ", nrow(ratings_mat)))  
   
   # Train the model on book ratings - User Based Collaborative Filtering 
   # For each of the users, identify 10 similar users based on distance between their vectors (defined by book ratings) 
-  model = Recommender(ratings_mat[1:n_users], method = "UBCF", param=list(method=method,nn=nn))
+  rec_model = Recommender(ratings_mat[1:n_users], method = "UBCF", param=list(method=method, nn=nn))
   
   # Generate outputs
-  rec_model <- model[!(names(model) %in% c('x', 'residuals', 'fitted.values'))]
-  attributes(rec_model)$class <- 'cosinesimilarity'
+  #attributes(rec_model)$class <- 'cosinesimilarity'
   save(rec_model, file=paste(model_path, 'rec_model.RData', sep='/'))
   print(summary(rec_model))
-  
-  # Save fitted values in csv format
-  write.csv(model$fitted.values, paste(output_path, 'data/fitted_values.csv', sep='/'), row.names=FALSE)
   write('success', file=paste(output_path, 'success', sep='/'))}
+
 
 # Define scoring function
 serve <- function() {
