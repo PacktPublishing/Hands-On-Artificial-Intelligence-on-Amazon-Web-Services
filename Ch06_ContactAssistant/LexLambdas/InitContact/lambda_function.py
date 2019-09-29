@@ -31,7 +31,9 @@ def init_contact(intent_name, parameters, attributes):
     return response
 
 
+#####
 # lex response helper functions
+#####
 def intent_success(intent_name, parameters, attributes):
     return {
         'sessionAttributes': attributes,

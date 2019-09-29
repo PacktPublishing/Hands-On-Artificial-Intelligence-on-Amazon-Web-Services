@@ -33,7 +33,9 @@ def lookup_phone(intent_name, parameters, attributes):
     return response
 
 
+#####
 # AWS lex helper functions
+#####
 def intent_success(intent_name, parameters, attributes):
     return {
         'sessionAttributes': attributes,

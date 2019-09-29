@@ -2,20 +2,30 @@
 
 const serverUrl = "http://127.0.0.1:8000";
 
-function uploadImage() {
-    // create form data from file upload input field
+async function uploadImage() {
+    // encode input file as base64 string for upload
     let file = document.getElementById("file").files[0];
-    let formData = new FormData();
-    formData.append("file", file, file.name);
+    let converter = new Promise(function(resolve, reject) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result
+            .toString().replace(/^data:(.*,)?/, ''));
+        reader.onerror = (error) => reject(error);
+    });
+    let encodedString = await converter;
 
     // clear file upload input field
     document.getElementById("file").value = "";
 
     // make server call to upload image
     // and return the server upload promise
-    return fetch(serverUrl + "/images/", {
+    return fetch(serverUrl + "/images", {
         method: "POST",
-        body: formData
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({filename: file.name, filebytes: encodedString})
     }).then(response => {
         if (response.ok) {
             return response.json();
@@ -38,9 +48,13 @@ function updateImage(image) {
 function translateImage(image) {
     // make server call to translate image
     // and return the server upload promise
-    return fetch(serverUrl + "/images/" + image["fileId"] +
-        "/from-lang/auto/to-lang/en/translated-text", {
-        method: "GET"
+    return fetch(serverUrl + "/images/" + image["fileId"] + "/translate-text", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({fromLang: "auto", toLang: "en"})
     }).then(response => {
         if (response.ok) {
             return response.json();

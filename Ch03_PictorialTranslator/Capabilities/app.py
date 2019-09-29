@@ -3,14 +3,13 @@ from chalicelib import storage_service
 from chalicelib import recognition_service
 from chalicelib import translation_service
 
-import cgi
-from io import BytesIO
+import base64
+import json
 
 #####
 # chalice app configuration
 #####
 app = Chalice(app_name='Capabilities')
-app.api.binary_types.append('multipart/form-data')
 app.debug = True
 
 #####
@@ -25,22 +24,25 @@ translation_service = translation_service.TranslationService()
 #####
 # RESTful endpoints
 #####
-@app.route('/images', methods = ['POST'], content_types = ['multipart/form-data'], cors = True)
+@app.route('/images', methods = ['POST'], cors = True)
 def upload_image():
-    """processes multipart upload and saves file to storage service"""
-    uploaded_file = get_uploaded_file(app.current_request, 'file')
-
-    file_name = uploaded_file["filename"]
-    file_bytes = uploaded_file["bytes"]
+    """processes file upload and saves file to storage service"""
+    request_data = json.loads(app.current_request.raw_body)
+    file_name = request_data['filename']
+    file_bytes = base64.b64decode(request_data['filebytes'])
 
     image_info = storage_service.upload_file(file_bytes, file_name)
 
     return image_info
 
 
-@app.route('/images/{image_id}/from-lang/{from_lang}/to-lang/{to_lang}/translated-text', methods = ['GET'], cors = True)
-def translate_image_text(image_id, from_lang, to_lang):
+@app.route('/images/{image_id}/translate-text', methods = ['POST'], cors = True)
+def translate_image_text(image_id):
     """detects then translates text in the specified image"""
+    request_data = json.loads(app.current_request.raw_body)
+    from_lang = request_data['fromLang']
+    to_lang = request_data['toLang']
+
     MIN_CONFIDENCE = 80.0
 
     text_lines = recognition_service.detect_text(image_id)
@@ -57,31 +59,3 @@ def translate_image_text(image_id, from_lang, to_lang):
             })
 
     return translated_lines
-
-
-#####
-# helper functions
-#####
-def get_uploaded_file(request, name):
-    """parses multipart request to extract uploaded file"""
-    headers = request.headers
-    raw_body = BytesIO(request.raw_body)
-
-    form = cgi.FieldStorage(
-        fp = raw_body,
-        headers = headers,
-        environ = {'REQUEST_METHOD': 'POST',
-                   'CONTENT_TYPE': headers['content-type']})
-
-    content_type = headers['content-type']
-
-    _, parameters = cgi.parse_header(content_type)
-    parameters['boundary'] = parameters['boundary'].encode('utf-8')
-    # for python 3.7
-    content_length = headers['content-length']
-    parameters['CONTENT-LENGTH'] = content_length
-
-    raw_body = BytesIO(app.current_request.raw_body)
-    parts = cgi.parse_multipart(raw_body, parameters)
-
-    return {"filename": form[name].filename, "bytes": parts[name][0]}

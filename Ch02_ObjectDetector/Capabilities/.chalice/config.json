@@ -3,7 +3,7 @@
   "app_name": "Capabilities",
   "stages": {
     "dev": {
-      "autogen_policy": true,
+      "autogen_policy": false,
       "api_gateway_stage": "api"
     }
   }

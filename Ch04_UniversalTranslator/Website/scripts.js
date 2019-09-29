@@ -40,13 +40,13 @@ function stopRecording() {
     audioRecorder.stop();
 }
 
-function handleAudioData(audio) {
+function handleAudioData(audioRecording) {
     audioRecorder.stop();
 
-    audioFile = new File([audio], "recorded_audio.wav", {type: "audio/wav"});
+    audioFile = new File([audioRecording], "recorded_audio.wav", {type: "audio/wav"});
 
     let audioElem = document.getElementById("recording-player");
-    audioElem.src = window.URL.createObjectURL(audio);
+    audioElem.src = window.URL.createObjectURL(audioRecording);
 }
 
 let isRecording = false;
@@ -68,16 +68,26 @@ function toggleRecording() {
     isRecording = !isRecording;
 }
 
-function uploadRecording() {
-    // create form data from audio file
-    let formData = new FormData();
-    formData.append("file", audioFile, audioFile.name);
+async function uploadRecording() {
+    // encode recording file as base64 string for upload
+    let converter = new Promise(function(resolve, reject) {
+        const reader = new FileReader();
+        reader.readAsDataURL(audioFile);
+        reader.onload = () => resolve(reader.result
+            .toString().replace(/^data:(.*,)?/, ''));
+        reader.onerror = (error) => reject(error);
+    });
+    let encodedString = await converter;
 
     // make server call to upload image
     // and return the server upload promise
-    return fetch(serverUrl + "/recordings/", {
+    return fetch(serverUrl + "/recordings", {
         method: "POST",
-        body: formData
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({filename: audioFile.name, filebytes: encodedString})
     }).then(response => {
         if (response.ok) {
             return response.json();
@@ -101,9 +111,13 @@ function translateRecording(audio) {
     textSpinner.hidden = false;
 
     // make server call to transcribe recorded audio
-    return fetch(serverUrl + "/recordings/" + audio["fileId"] +
-        "/from-lang/" + fromLang + "/to-lang/" + toLang + "/translated-text", {
-        method: "GET"
+    return fetch(serverUrl + "/recordings/" + audio["fileId"] + "/translate-text", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({fromLang: fromLang, toLang: toLang})
     }).then(response => {
         if (response.ok) {
             return response.json();
@@ -175,4 +189,3 @@ function uploadAndTranslate() {
 
     toggleBtn.disabled = false;
 }
-
