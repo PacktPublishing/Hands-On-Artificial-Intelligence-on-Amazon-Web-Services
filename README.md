@@ -1,3 +1,8 @@
+## $5 Tech Unlocked 2021!
+[Buy and download this Book for only $5 on PacktPub.com](https://www.packtpub.com/product/hands-on-artificial-intelligence-on-amazon-web-services/9781789534146)
+-----
+*If you have read this book, please leave a review on [Amazon.com](https://www.amazon.com/gp/product/1789534143).     Potential readers can then use your unbiased opinion to help them make purchase decisions. Thank you. The $5 campaign         runs from __December 15th 2020__ to __January 13th 2021.__*
+
 # Hands-On Artificial Intelligence on Amazon Web Services 
 
 <a href="https://www.packtpub.com/data/hands-on-artificial-intelligence-on-amazon-web-services?utm_source=github&utm_medium=repository&utm_campaign=9781789534146"><img src="https://www.packtpub.com/media/catalog/product/cache/4cdce5a811acc0d2926d7f857dceb83b/9/7/9781789534146-original.jpeg" alt="Hands-On Artificial Intelligence on Amazon Web Services " height="256px" align="right"></a>
