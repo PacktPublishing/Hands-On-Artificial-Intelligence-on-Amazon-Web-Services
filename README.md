@@ -1,7 +1,3 @@
-## [Get this title for $10 on Packt's Spring Sale](https://www.packt.com/B11766?utm_source=github&utm_medium=packt-github-repo&utm_campaign=spring_10_dollar_2022)
------
-For a limited period, all eBooks and Videos are only $10. All the practical content you need \- by developers, for developers
-
 # Hands-On Artificial Intelligence on Amazon Web Services 
 
 <a href="https://www.packtpub.com/data/hands-on-artificial-intelligence-on-amazon-web-services?utm_source=github&utm_medium=repository&utm_campaign=9781789534146"><img src="https://www.packtpub.com/media/catalog/product/cache/4cdce5a811acc0d2926d7f857dceb83b/9/7/9781789534146-original.jpeg" alt="Hands-On Artificial Intelligence on Amazon Web Services " height="256px" align="right"></a>
